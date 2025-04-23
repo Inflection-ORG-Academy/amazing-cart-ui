@@ -1,6 +1,8 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 
 const Card = (props) => {
+  const [count, setCount] = useState(5);
   return (
     <article className="overflow-hidden rounded-lg shadow-sm transition hover:shadow-lg">
       {props.children && <div>{props.children}</div>}
@@ -20,7 +22,14 @@ const Card = (props) => {
           {props.desc}
         </p>
       </div>
-      <button onClick={props.onPrintTable}>Click to Print Table</button>
+
+      <button
+        onClick={() => {
+          props.onPrintTable(count);
+        }}
+      >
+        Click to Print Table
+      </button>
     </article>
   );
 };
