@@ -5,6 +5,7 @@ import { setCookie } from "../../../utils/cookies";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { login } from "../../../utils/apiClient";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -22,14 +23,32 @@ const LoginPage = () => {
     return false;
   };
 
-  const login = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("You are Log in Now");
+    try {
+      const res = await login({ email, password });
+      const data = await res.json();
+      console.log(data);
+      if (data.error) {
+        alert(data.message);
+        return;
+      }
+
+      setCookie("access_token", data.access_token);
+      setCookie("refresh_token", data.refresh_token);
+      setIsLogin(true);
+      setEmail("");
+      setPassword("");
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <form
-        onSubmit={login}
+        onSubmit={handleLogin}
         className="max-w-sm w-full rounded border border-gray-400 grid gap-2 p-4"
       >
         <h1 className="text-center mb-5 font-semibold text-3xl">Login</h1>
@@ -37,6 +56,7 @@ const LoginPage = () => {
           type="email"
           required
           placeholder="email"
+          value={email}
           className="border outline-none rounded px-2 py-1.5"
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -45,6 +65,7 @@ const LoginPage = () => {
             type={isPassword ? "password" : "text"}
             required
             placeholder="Password"
+            value={password}
             className="border outline-none rounded px-2 py-1.5 w-full"
             onChange={(e) => setPassword(e.target.value)}
           />

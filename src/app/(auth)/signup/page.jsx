@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import Link from "next/link";
 import { useState } from "react";
+import { signup } from "../../../utils/apiClient";
 
 const SignupPage = () => {
   const router = useRouter();
@@ -18,14 +19,32 @@ const SignupPage = () => {
     return false;
   };
 
-  const signup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("Account Created");
+    try {
+      const res = await signup({
+        email: email,
+        full_name: fullName,
+        reset_password_ui_url: "http://localhost:3000/reset_password",
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if (data.error) {
+        alert(data.message);
+        return;
+      }
+      setEmail("");
+      setFullName("");
+      alert(data.message);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <form
-        onSubmit={signup}
+        onSubmit={handleSignup}
         className="max-w-sm w-full rounded border border-gray-400 grid gap-2 p-4"
       >
         <h1 className="text-center mb-5 font-semibold text-3xl">
@@ -36,6 +55,7 @@ const SignupPage = () => {
           type="text"
           required
           placeholder="Your Name"
+          value={fullName}
           className="border outline-none rounded px-2 py-1.5 w-full"
           onChange={(e) => setFullName(e.target.value)}
         />
@@ -44,6 +64,7 @@ const SignupPage = () => {
           type="email"
           required
           placeholder="email"
+          value={email}
           className="border outline-none rounded px-2 py-1.5"
           onChange={(e) => setEmail(e.target.value)}
         />
