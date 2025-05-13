@@ -50,5 +50,5 @@ apiClient.forgotPassword = (payload) =>
 apiClient.fetchMyProfile = () => apiClient("/users/profiles/my", "GET");
 
 // Product APIs
-apiClient.getProducts = (filter = "") =>
-  apiClient(`/products?${filter}`, "GET");
+apiClient.getProducts = (filter = "limit=20&page=1") =>
+  apiClient(`/products/public?${filter}`, "GET");
