@@ -52,3 +52,6 @@ apiClient.fetchMyProfile = () => apiClient("/users/profiles/my", "GET");
 // Product APIs
 apiClient.getProducts = (filter = "limit=20&page=1") =>
   apiClient(`/products/public?${filter}`, "GET");
+
+// Category APIs
+apiClient.fetchCategories = () => apiClient("/categories/list", "GET");
