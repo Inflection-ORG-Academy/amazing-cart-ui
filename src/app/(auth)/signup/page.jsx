@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import Link from "next/link";
 import { useState } from "react";
-import { signup } from "../../../utils/apiClient";
+import { apiClient } from "../../../utils/apiClient";
 
 const SignupPage = () => {
   const router = useRouter();
@@ -22,13 +22,12 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await signup({
+      const data = await apiClient.signup({
         email: email,
         full_name: fullName,
         reset_password_ui_url: "http://localhost:3000/reset_password",
       });
 
-      const data = await res.json();
       console.log(data);
       if (data.error) {
         alert(data.message);
