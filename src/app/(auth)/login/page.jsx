@@ -64,6 +64,7 @@ const LoginPage = () => {
       console.log(data);
       if (data.error) {
         setError(data.message);
+        setIsLoading(false);
         return;
       }
 
