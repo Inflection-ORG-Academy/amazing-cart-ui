@@ -81,10 +81,12 @@ const CatLayout = ({ children }) => {
       <aside
         className={`${
           isDrawerOpen ? "w-96 p-5" : "w-0 p-0"
-        } fixed top-16 left-0 bottom-0 overflow-y-auto bg-red-100 h-screen transition-all duration-500`}
+        } fixed top-16 left-0 bottom-0 overflow-y-auto myscrollbar bg-green-50 h-screen transition-all duration-500`}
       >
         <div className="mb-5 border-b-2 border-gray-300 pb-5">
-          <h1 className="text-2xl font-semibold mb-2">Categories</h1>
+          <h1 className="text-2xl text-green-800 font-semibold mb-2">
+            Categories
+          </h1>
           {loading ? (
             [...Array(5)].map((_, index) => (
               <div
@@ -98,7 +100,7 @@ const CatLayout = ({ children }) => {
                 <li key={category.id}>
                   <Link
                     href={`/categories/${category.slug}`}
-                    className={`text-lg text-blue-500 hover:underline ${
+                    className={`text-lg text-gray-900 hover:underline ${
                       cat_slug === category.slug ? "font-semibold" : ""
                     }`}
                   >
@@ -121,9 +123,15 @@ const CatLayout = ({ children }) => {
           <ul className="flex flex-col gap-2">
             {attributes.map((attr) => (
               <li key={attr.id}>
-                <p className={`text-lg text-blue-500 hover:underline`}>
-                  {attr.name}
-                </p>
+                <p className="text-green-800">{attr.name}</p>
+                {attr.values.map((value) => (
+                  <div className="flex items-center gap-2 mt-1">
+                    <input id={value} type="checkbox" />
+                    <label htmlFor={value} className="cursor-pointer">
+                      {value}
+                    </label>
+                  </div>
+                ))}
               </li>
             ))}
           </ul>
